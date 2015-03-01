@@ -8,8 +8,11 @@
     <script type="text/javascript">
 		function addRune() {
 			 $("<img/>", {
-				 "src": "images/ansuz.gif"
-			 }).appendTo("body").randomMove();
+				 "src": "images/ansuz.gif",
+				 "style": "position: absolute;"
+			 }).appendTo("#holder").randomMove({
+				 containerSelector: "#holder"
+				 });
 		};
         $(document).ready(function () {
             setTimeout(function() {
@@ -22,17 +25,25 @@
     </script>
     <style>
         html, body {
-            width: 98%;
+            width: 97%;
             height: 97%;
         }
         h1 {
 			text-align: center;
 		}
 		body {
-			background-color: #a9aaff;
+			background-color: #a9aaff; 
+		}
+		
+		#holder {
+			width: 90%;
+			height: 90%;
+			margin: 0px auto;
+			border: 1px solid blue;
 		}
     </style>
 </head>
 <body>
+	<div id="holder"></div>
 </body>
 </html>

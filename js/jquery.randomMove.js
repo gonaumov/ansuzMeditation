@@ -20,7 +20,7 @@
 			
             var classSelector = "prclickImage"  + index.toString();
             var cssIdSelector = "iposition" + index.toString();
-            var position = currentElement.offset(); // position = { left:; number, top: number }
+            var position = currentElement.position(); // position = { left:; number, top: number }
             var oxPosition = position.left;
             var oyPosition = position.top;
 
@@ -30,8 +30,8 @@
             
             var container = $(settings.containerSelector);
 
-            var yPosition = randomIntFromInterval((container.offset()).top, (container.height() - currentElement.height()));
-            var xPosition = randomIntFromInterval((container.offset()).left, (container.width() - currentElement.width()));
+            var yPosition = randomIntFromInterval((container.position()).top, (container.height() - currentElement.height()));
+            var xPosition = randomIntFromInterval((container.position()).left, (container.width() - currentElement.width()));
 
             var positionAndClassContent = [
                "@keyframes " + classSelector + " {",
@@ -70,6 +70,7 @@
             currentElement.one("animationend webkitAnimationEnd oAnimationEnd", function (event) {
                 $("#" + cssIdSelector).remove();
                 $(this).css({
+					position: "absolute",
                     left: xPosition + "px",
                     top: yPosition + "px"
                 });

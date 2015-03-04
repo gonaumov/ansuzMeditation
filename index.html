@@ -3,47 +3,47 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Ansuz runes </title>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="js/jquery.randomMove.js"></script>
-    <script type="text/javascript">
-		function addRune() {
-			 $("<img/>", {
-				 "src": "images/ansuz.gif",
-				 "style": "position: absolute;"
-			 }).appendTo("#holder").randomMove({
-				 containerSelector: "#holder"
-				 });
-		};
-        $(document).ready(function () {
-            setTimeout(function() {
-				addRune();
-				if($.fn.randomMove.iterarionNumber < 8) {
-					setTimeout(arguments.callee,10000);
-			    }
-			}, 1000);
-        });
-    </script>
-    <style>
-        html, body {
-            width: 97%;
-            height: 97%;
-        }
-        h1 {
-			text-align: center;
-		}
-		body {
-			background-color: #a9aaff; 
-		}
-		
-		#holder {
-			width: 90%;
-			height: 90%;
-			margin: 0px auto;
-			border: 1px solid blue;
-		}
-    </style>
-</head>
+		<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src="js/jquery.randomMove.js"></script>
+		<script type="text/javascript">
+			function addRune() {
+				 var dfd = $.Deferred();
+				 
+				 $("<img/>", {
+					 "src": "images/ansuz.gif",
+					 "style": "position: absolute;"
+				 }).on("load",function() {
+					  $(this).randomMove({ 
+						 containerSelector: "#holder"
+					  });
+					  
+					  dfd.resolve();
+				 }).appendTo("#holder");
+				 
+				 return dfd.promise();
+			};
+			
+			$(window).load(function () {
+				 setTimeout(function loadRunes() {
+					addRune().done(function() {
+						if($.fn.randomMove.iterarionNumber < 8) {
+							setTimeout(loadRunes,10000);	
+						}
+				    });
+				 }, 1000);
+			});
+		</script>
+		<style>		
+			#holder {
+				width: 700px;
+				height: 400px;
+				background-color: #a9aaff; 
+				margin: 0px auto;
+				position: relative;
+			}
+		</style>
 <body>
-	<div id="holder"></div>
+	   <div id="holder"></div>
+	   <img style="display: none;" src="images/ansuz.gif" border="0"/>  
 </body>
 </html>

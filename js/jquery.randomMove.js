@@ -1,9 +1,14 @@
 (function ($) {
-    $.fn.randomMove = function () {
+    $.fn.randomMove = function (options) {
+		var defaults = {
+		    containerSelector: "body"
+		};
+		var settings = $.extend({}, defaults, options);
+			
         return this.each(function handleCurrentElement() {			
             var currentElement = $(this);
             var index = currentElement.data("indexIteration");
-            
+                    
             if(typeof index === 'undefined' && typeof $.fn.randomMove.iterarionNumber === 'undefined') {
 				 $.fn.randomMove.iterarionNumber = 0;
 				 index = 0;
@@ -15,16 +20,18 @@
 			
             var classSelector = "prclickImage"  + index.toString();
             var cssIdSelector = "iposition" + index.toString();
-            var position = currentElement.offset(); // position = { left:; number, top: number }
+            var position = currentElement.position(); // position = { left:; number, top: number }
             var oxPosition = position.left;
             var oyPosition = position.top;
 
             var randomIntFromInterval = function (min, max) {
                 return Math.floor(Math.random() * (max - min + 1) + min);
             };
+            
+            var container = $(settings.containerSelector);
 
-            var yPosition = randomIntFromInterval(0, ($("body").innerHeight() - currentElement.height()));
-            var xPosition = randomIntFromInterval(0, ($("body").innerWidth() - currentElement.width()));
+            var yPosition = randomIntFromInterval(0, (container.height() - currentElement.height()));
+            var xPosition = randomIntFromInterval(0, (container.width() - currentElement.width()));
 
             var positionAndClassContent = [
                "@keyframes " + classSelector + " {",
@@ -63,7 +70,7 @@
             currentElement.one("animationend webkitAnimationEnd oAnimationEnd", function (event) {
                 $("#" + cssIdSelector).remove();
                 $(this).css({
-                    position: "absolute",
+					position: "absolute",
                     left: xPosition + "px",
                     top: yPosition + "px"
                 });
